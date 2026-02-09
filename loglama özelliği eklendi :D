@@ -1,0 +1,34 @@
+import datetime
+yasakli_ip_listesi = ["127.0.0.1", "192.168.1.1", "10.0.0.1", "8.8.8.8"]
+sifre = input("Sisteme erismek icin sifreyi giriniz: ")
+zaman_damgasi = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+if sifre == "cyber123":
+    print("[+] Giriş başarili! Analiz araçlari yükleniyor...")
+    
+    hedef_ip = input("Lutfen tarama yapilacak hedef IP adresini giriniz: ")
+    tarama_modu = input("Tarama modunu seçiniz (Hizli/Detayli): ")
+
+    print("\n--- İŞLEM BAŞLATILIYOR ---")
+    print("Hedef IP:", hedef_ip)
+    print("Seçilen Mod:", tarama_modu)
+    if hedef_ip in yasakli_ip_listesi:
+        durum = "REDDEDİLDİ (Yasaklı IP)"
+        print(f"\nHATA: {hedef_ip} adresi yasakli listededir!")
+        print("İşlem güvenlik nedeniyle durduruldu.")
+    else:
+        durum = "ONAYLANDI (Güvenli)"
+        print("\n--- ANALİZ BAŞLATILDI ---")
+        print(f"Hedef: {hedef_ip}")
+        print("Durum: %100 Güvenli. Tarama izni verildi.")
+
+    with open("guvenlik_log.txt", "a", encoding="utf-8") as log_dosyasi:
+        log_notu = f"[{zaman_damgasi}] Kullanıcı: Admin | Sorgulanan: {hedef_ip} | Durum: {durum}\n"
+        log_dosyasi.write(log_notu)
+    
+    print(f"\n[i] İşlem detayları 'guvenlik_log.txt' dosyasına kaydedildi.")
+
+else:
+    print("HATALI ŞİFRE! Erişim reddedildi.")
+    with open("guvenlik_log.txt", "a", encoding="utf-8") as log_dosyasi:
+        log_dosyasi.write(f"[{zaman_damgasi}] !!! HATALI GİRİŞ DENEMESİ !!!\n")
